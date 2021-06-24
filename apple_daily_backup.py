@@ -16,10 +16,12 @@ cdn_list = video_sheet['cdn_link'].to_list()
 title_list = video_sheet['title'].to_list()
 
 options = webdriver.ChromeOptions()
-options.add_experimental_option("prefs", {"download.default_directory":"D:\Apple Daily\果籽"})
+options.add_experimental_option("prefs", {"download.default_directory":"D:\Apple Daily\果籽3"})
 driver = webdriver.Chrome(executable_path='chromedriver.exe', options=options)
-for idx, video in enumerate(cdn_list[15:]):
+start_index = 138
+for idx, video in enumerate(cdn_list[start_index:]):
     try:
+        curr_idx = idx + start_index
         driver.get(video)
         time.sleep(5)
         get_link_button = driver.find_elements_by_xpath('//*[@id="btn-action"]')
@@ -27,8 +29,8 @@ for idx, video in enumerate(cdn_list[15:]):
         time.sleep(5)
         download_button = driver.find_elements_by_xpath('//*[@id="asuccess"]')
         download_button[0].click()
-        logging.info(f'{idx}/{len(cdn_list)} - Backup {title_list[idx]}')
+        logging.info(f'{curr_idx}/{len(cdn_list)} - Backup {title_list[curr_idx]}')
     except:
-        logging.info(f'SKIPPED: {idx}/{len(cdn_list)} - Backup {title_list[idx]}')
+        logging.info(f'SKIPPED: {curr_idx}/{len(cdn_list)} - Backup {title_list[curr_idx]}')
 time.sleep(60)
 driver.quit()
